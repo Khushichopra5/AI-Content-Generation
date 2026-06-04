@@ -1,0 +1,89 @@
+databases:
+  - name: contentgen-db
+    plan: free
+    databaseName: contentgen
+    user: contentgen
+
+services:
+  - type: redis
+    name: contentgen-redis
+    plan: free
+    maxmemoryPolicy: allkeys-lru
+    ipAllowList: []
+
+  - type: web
+    name: contentgen-web
+    runtime: python
+    plan: free
+    buildCommand: "pip install . && python manage.py collectstatic --noinput"
+    startCommand: "python manage.py migrate --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:$PORT"
+    healthCheckPath: /health/
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: config.settings.production
+      - key: DJANGO_SECRET_KEY
+        sync: false
+      - key: DJANGO_ALLOWED_HOSTS
+        value: ".onrender.com"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: contentgen-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: contentgen-redis
+          property: connectionString
+      - key: CELERY_BROKER_URL
+        fromService:
+          type: redis
+          name: contentgen-redis
+          property: connectionString
+      - key: CELERY_RESULT_BACKEND
+        fromService:
+          type: redis
+          name: contentgen-redis
+          property: connectionString
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_TEXT_MODEL
+        value: gpt-4.1-mini
+      - key: OPENAI_IMAGE_MODEL
+        value: gpt-5
+
+  - type: worker
+    name: contentgen-worker
+    runtime: python
+    plan: starter
+    buildCommand: "pip install ."
+    startCommand: "celery -A config.celery:app worker --loglevel info --pool solo"
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: config.settings.production
+      - key: DJANGO_SECRET_KEY
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: contentgen-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: contentgen-redis
+          property: connectionString
+      - key: CELERY_BROKER_URL
+        fromService:
+          type: redis
+          name: contentgen-redis
+          property: connectionString
+      - key: CELERY_RESULT_BACKEND
+        fromService:
+          type: redis
+          name: contentgen-redis
+          property: connectionString
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_TEXT_MODEL
+        value: gpt-4.1-mini
+      - key: OPENAI_IMAGE_MODEL
+        value: gpt-5
