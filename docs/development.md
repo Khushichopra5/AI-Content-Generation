@@ -66,7 +66,7 @@ If you update models:
 If you change endpoints:
 - update serializers
 - update tests
-- update [docs/api.md](/Users/sanskar/dev/ContentGen/docs/api.md)
+- update [docs/api.md](api.md)
 - update README examples if the request/response contract changed
 
 ## Environment Discipline
@@ -94,7 +94,7 @@ If you change endpoints:
 ## Documentation Discipline
 
 When you materially change architecture or behavior, update:
-- [README.md](/Users/sanskar/dev/ContentGen/README.md)
-- [docs/architecture.md](/Users/sanskar/dev/ContentGen/docs/architecture.md)
-- [docs/api.md](/Users/sanskar/dev/ContentGen/docs/api.md)
+- [README.md](../README.md)
+- [docs/architecture.md](architecture.md)
+- [docs/api.md](api.md)
 - tests
