@@ -18,7 +18,7 @@ Primary models:
 ## User
 
 Defined in:
-- [apps/authentication/models.py](/Users/sanskar/dev/ContentGen/apps/authentication/models.py)
+- [apps/authentication/models.py](../apps/authentication/models.py)
 
 Role:
 - top-level owner for user-scoped records
@@ -40,7 +40,7 @@ Notes:
 ## APIToken
 
 Defined in:
-- [apps/authentication/models.py](/Users/sanskar/dev/ContentGen/apps/authentication/models.py)
+- [apps/authentication/models.py](../apps/authentication/models.py)
 
 Role:
 - bearer token for API access
@@ -62,7 +62,7 @@ Notes:
 ## BrandProfile
 
 Defined in:
-- [apps/brands/models.py](/Users/sanskar/dev/ContentGen/apps/brands/models.py)
+- [apps/brands/models.py](../apps/brands/models.py)
 
 Role:
 - source-of-truth brand context for generation
@@ -85,7 +85,7 @@ Notes:
 ## ContentTemplate
 
 Defined in:
-- [apps/templates/models.py](/Users/sanskar/dev/ContentGen/apps/templates/models.py)
+- [apps/templates/models.py](../apps/templates/models.py)
 
 Role:
 - reusable prompt framing for common content patterns
@@ -104,7 +104,7 @@ Notes:
 ## GenerationJob
 
 Defined in:
-- [apps/generation/models.py](/Users/sanskar/dev/ContentGen/apps/generation/models.py)
+- [apps/generation/models.py](../apps/generation/models.py)
 
 Role:
 - main execution and audit record for each generation request
@@ -138,7 +138,7 @@ Notes:
 ## Asset
 
 Defined in:
-- [apps/generation/models.py](/Users/sanskar/dev/ContentGen/apps/generation/models.py)
+- [apps/generation/models.py](../apps/generation/models.py)
 
 Role:
 - persisted output artifact linked to a generation job
@@ -160,7 +160,7 @@ Notes:
 ## UsageEvent
 
 Defined in:
-- [apps/usage/models.py](/Users/sanskar/dev/ContentGen/apps/usage/models.py)
+- [apps/usage/models.py](../apps/usage/models.py)
 
 Role:
 - lightweight operational telemetry persisted in the database
