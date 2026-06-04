@@ -21,12 +21,13 @@ Optional:
 ## Container Artifacts
 
 Primary files:
-- [Dockerfile](/Users/sanskar/dev/ContentGen/Dockerfile)
-- [docker-compose.yml](/Users/sanskar/dev/ContentGen/docker-compose.yml)
-- [scripts/entrypoint.sh](/Users/sanskar/dev/ContentGen/scripts/entrypoint.sh)
-- [scripts/start-web.sh](/Users/sanskar/dev/ContentGen/scripts/start-web.sh)
-- [scripts/start-worker.sh](/Users/sanskar/dev/ContentGen/scripts/start-worker.sh)
-- [scripts/start-beat.sh](/Users/sanskar/dev/ContentGen/scripts/start-beat.sh)
+- [Dockerfile](../Dockerfile)
+- [docker-compose.yml](../docker-compose.yml)
+- [render.yaml](../render.yaml)
+- [scripts/entrypoint.sh](../scripts/entrypoint.sh)
+- [scripts/start-web.sh](../scripts/start-web.sh)
+- [scripts/start-worker.sh](../scripts/start-worker.sh)
+- [scripts/start-beat.sh](../scripts/start-beat.sh)
 
 ## Required Environment Variables
 
