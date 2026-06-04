@@ -14,13 +14,13 @@ This repository implements the backend described in `PROMPT.md`, `SPEC.md`, and 
 
 ## Documentation
 
-Extended project documentation lives in [docs/README.md](/Users/sanskar/dev/ContentGen/docs/README.md).
+Extended project documentation lives in [docs/README.md](docs/README.md).
 
 Useful starting points:
-- [docs/architecture.md](/Users/sanskar/dev/ContentGen/docs/architecture.md)
-- [docs/api.md](/Users/sanskar/dev/ContentGen/docs/api.md)
-- [docs/data-model.md](/Users/sanskar/dev/ContentGen/docs/data-model.md)
-- [docs/operations.md](/Users/sanskar/dev/ContentGen/docs/operations.md)
+- [docs/architecture.md](docs/architecture.md)
+- [docs/api.md](docs/api.md)
+- [docs/data-model.md](docs/data-model.md)
+- [docs/operations.md](docs/operations.md)
 
 ## Overview
 
