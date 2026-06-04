@@ -107,9 +107,9 @@ config/
 ## 1. API boundary
 
 Relevant files:
-- [config/urls.py](/Users/sanskar/dev/ContentGen/config/urls.py)
-- [apps/generation/views.py](/Users/sanskar/dev/ContentGen/apps/generation/views.py)
-- [apps/generation/serializers.py](/Users/sanskar/dev/ContentGen/apps/generation/serializers.py)
+- [config/urls.py](../config/urls.py)
+- [apps/generation/views.py](../apps/generation/views.py)
+- [apps/generation/serializers.py](../apps/generation/serializers.py)
 
 Responsibilities:
 - authenticate the caller
@@ -122,7 +122,7 @@ Views call the serializer first, then pass validated data into the service layer
 ## 2. Service orchestration
 
 Relevant file:
-- [apps/generation/services.py](/Users/sanskar/dev/ContentGen/apps/generation/services.py)
+- [apps/generation/services.py](../apps/generation/services.py)
 
 The service layer is the core coordination point. It:
 - builds the canonical request payload
@@ -138,10 +138,10 @@ This layer exists to keep business behavior independent from HTTP transport and 
 ## 3. Persistence model
 
 Relevant files:
-- [apps/generation/models.py](/Users/sanskar/dev/ContentGen/apps/generation/models.py)
-- [apps/brands/models.py](/Users/sanskar/dev/ContentGen/apps/brands/models.py)
-- [apps/templates/models.py](/Users/sanskar/dev/ContentGen/apps/templates/models.py)
-- [apps/usage/models.py](/Users/sanskar/dev/ContentGen/apps/usage/models.py)
+- [apps/generation/models.py](../apps/generation/models.py)
+- [apps/brands/models.py](../apps/brands/models.py)
+- [apps/templates/models.py](../apps/templates/models.py)
+- [apps/usage/models.py](../apps/usage/models.py)
 
 Primary entities:
 - `User`
@@ -164,7 +164,7 @@ Primary entities:
 ## 4. Background execution
 
 Relevant file:
-- [apps/generation/tasks.py](/Users/sanskar/dev/ContentGen/apps/generation/tasks.py)
+- [apps/generation/tasks.py](../apps/generation/tasks.py)
 
 Celery is responsible for:
 - copy generation
@@ -188,7 +188,7 @@ The image task is intentionally separate so the copy path can complete without w
 ## 5. OpenAI integration
 
 Relevant file:
-- [apps/integrations/openai_client.py](/Users/sanskar/dev/ContentGen/apps/integrations/openai_client.py)
+- [apps/integrations/openai_client.py](../apps/integrations/openai_client.py)
 
 The wrapper exposes two operations:
 - structured text generation
@@ -208,8 +208,8 @@ Image generation:
 ## 6. Output validation
 
 Relevant files:
-- [apps/generation/schemas.py](/Users/sanskar/dev/ContentGen/apps/generation/schemas.py)
-- [apps/generation/services.py](/Users/sanskar/dev/ContentGen/apps/generation/services.py)
+- [apps/generation/schemas.py](../apps/generation/schemas.py)
+- [apps/generation/services.py](../apps/generation/services.py)
 
 The structured response is validated twice conceptually:
 - constrained at generation time through the schema passed to OpenAI
@@ -220,8 +220,8 @@ This avoids accepting malformed model output into the database or cache.
 ## 7. Caching and deduplication
 
 Relevant files:
-- [apps/generation/prompting.py](/Users/sanskar/dev/ContentGen/apps/generation/prompting.py)
-- [apps/generation/services.py](/Users/sanskar/dev/ContentGen/apps/generation/services.py)
+- [apps/generation/prompting.py](../apps/generation/prompting.py)
+- [apps/generation/services.py](../apps/generation/services.py)
 
 Caching strategy:
 - normalize request payload
@@ -235,7 +235,7 @@ Deduplication strategy:
 ## 8. Asset persistence
 
 Relevant file:
-- [apps/generation/storage.py](/Users/sanskar/dev/ContentGen/apps/generation/storage.py)
+- [apps/generation/storage.py](../apps/generation/storage.py)
 
 Current backend:
 - local filesystem under `MEDIA_ROOT`
@@ -247,9 +247,9 @@ Abstraction intent:
 ## 9. Observability
 
 Relevant files:
-- [apps/common/middleware.py](/Users/sanskar/dev/ContentGen/apps/common/middleware.py)
-- [config/settings/base.py](/Users/sanskar/dev/ContentGen/config/settings/base.py)
-- [apps/usage/services.py](/Users/sanskar/dev/ContentGen/apps/usage/services.py)
+- [apps/common/middleware.py](../apps/common/middleware.py)
+- [config/settings/base.py](../config/settings/base.py)
+- [apps/usage/services.py](../apps/usage/services.py)
 
 Current observability includes:
 - request IDs
