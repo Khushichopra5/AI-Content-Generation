@@ -12,7 +12,7 @@ This document describes how the project is tested, what is currently covered, an
 - DRF test client
 
 Configured in:
-- [pytest.ini](/Users/sanskar/dev/ContentGen/pytest.ini)
+- [pytest.ini](../pytest.ini)
 
 ## Current Coverage Areas
 
@@ -27,9 +27,9 @@ Automated tests currently cover:
 - usage endpoint behavior
 
 Relevant test files:
-- [tests/test_prompting.py](/Users/sanskar/dev/ContentGen/tests/test_prompting.py)
-- [tests/test_auth_api.py](/Users/sanskar/dev/ContentGen/tests/test_auth_api.py)
-- [tests/test_domain_and_generation_api.py](/Users/sanskar/dev/ContentGen/tests/test_domain_and_generation_api.py)
+- [tests/test_prompting.py](../tests/test_prompting.py)
+- [tests/test_auth_api.py](../tests/test_auth_api.py)
+- [tests/test_domain_and_generation_api.py](../tests/test_domain_and_generation_api.py)
 
 ## Run Tests
 
