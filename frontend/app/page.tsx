@@ -2,6 +2,8 @@ import Link from "next/link";
 
 import { Orbit, Radar, Sparkles, Waypoints } from "lucide-react";
 
+import { API_BASE_URL } from "@/lib/config";
+
 const highlights = [
   {
     title: "Guest-first demos",
@@ -26,6 +28,8 @@ const highlights = [
 ];
 
 export default function HomePage() {
+  const healthUrl = `${API_BASE_URL.replace(/\/$/, "")}/health/`;
+
   return (
     <main className="min-h-screen overflow-hidden bg-white">
       <section className="grid-sheen relative isolate">
@@ -59,7 +63,7 @@ export default function HomePage() {
                   Open Workspace
                 </Link>
                 <a
-                  href="http://localhost:8000/health/"
+                  href={healthUrl}
                   className="rounded-full border border-slate-700 px-6 py-3 text-sm font-semibold text-slate-100 transition hover:border-slate-500"
                 >
                   Inspect Health API
