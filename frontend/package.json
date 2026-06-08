@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "NEXT_DIST_DIR=.next-dev next dev",
-    "build": "NEXT_DIST_DIR=.next-prod next build",
-    "start": "NEXT_DIST_DIR=.next-prod next start",
+    "build": "next build",
+    "start": "next start",
     "test:e2e": "playwright test"
   },
   "dependencies": {

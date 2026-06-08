@@ -30,6 +30,5 @@ htmlcov/
 
 frontend/.next/
 frontend/.next-dev/
-frontend/.next-prod/
 frontend/node_modules/
 frontend/test-results/
