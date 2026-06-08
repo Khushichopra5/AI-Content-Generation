@@ -12,8 +12,20 @@ export function JobInspector({ jobId }: { jobId: string }) {
     queryKey: ["job", jobId],
     queryFn: () => platformApi.jobs.detail(jobId),
     refetchInterval: (query) => {
-      const status = query.state.data?.status;
-      return status === "queued" || status === "running" ? 4000 : false;
+      const job = query.state.data;
+      if (!job) {
+        return 4000;
+      }
+
+      if (job.status === "queued" || job.status === "running") {
+        return 4000;
+      }
+
+      if (job.status === "succeeded" && job.include_image && job.assets.length === 0) {
+        return 4000;
+      }
+
+      return false;
     }
   });
 
@@ -61,7 +73,7 @@ export function JobInspector({ jobId }: { jobId: string }) {
           </div>
 
           <dl className="mt-6 grid gap-4 rounded-[1.5rem] bg-slate-50 p-5 text-sm sm:grid-cols-2">
-            <Meta label="Model" value={job.model_name || "Pending"} />
+            <Meta label="Text model" value={job.model_name || "Pending"} />
             <Meta label="Completed" value={formatDateTime(job.completed_at)} />
             <Meta label="Created" value={formatDateTime(job.created_at)} />
             <Meta label="Updated" value={formatDateTime(job.updated_at)} />
@@ -134,7 +146,9 @@ export function JobInspector({ jobId }: { jobId: string }) {
           <div className="mt-5 space-y-4">
             {job.assets.length === 0 ? (
               <div className="rounded-[1.4rem] border border-dashed border-slate-300 bg-slate-50 px-5 py-8 text-sm text-slate-600">
-                No assets attached to this job.
+                {job.include_image
+                  ? "Image generation was requested. The page will keep checking until the asset is attached."
+                  : "No assets attached to this job."}
               </div>
             ) : (
               job.assets.map((asset) => (
@@ -146,6 +160,11 @@ export function JobInspector({ jobId }: { jobId: string }) {
                     <div className="min-w-0 flex-1">
                       <p className="text-sm font-semibold text-slate-950">{asset.asset_type}</p>
                       <p className="mt-1 break-all text-xs text-slate-500">{asset.mime_type}</p>
+                      {typeof asset.metadata?.provider_model === "string" ? (
+                        <p className="mt-1 text-xs text-slate-500">
+                          Image model: {asset.metadata.provider_model}
+                        </p>
+                      ) : null}
                     </div>
                   </div>
                   <a

@@ -73,7 +73,7 @@ export const guestApi = {
 
 export const platformApi = {
   health: () =>
-    apiRequest<{ status: string; database: boolean; redis: boolean; debug: boolean }>("/health/"),
+    apiRequest<{ status: string; database: boolean; redis: boolean; debug: boolean }>("/api/health"),
   brands: {
     list: async () => apiRequest<PaginatedResponse<BrandProfile>>("/api/v1/brands/"),
     create: async (payload: Omit<BrandProfile, "id" | "created_at" | "updated_at">) =>

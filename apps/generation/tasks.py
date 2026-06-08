@@ -3,6 +3,7 @@ from __future__ import annotations
 import logging
 
 from celery import shared_task
+from django.conf import settings
 from django.db import transaction
 from django.utils import timezone
 
@@ -83,6 +84,7 @@ def run_image_generation_task(self, job_id: str) -> None:
         storage_url=storage_url,
         mime_type=result.mime_type,
         metadata={
+            "provider_model": settings.OPENAI_IMAGE_MODEL,
             "revised_prompt": result.revised_prompt,
             "provider_response_id": result.response_id,
         },
