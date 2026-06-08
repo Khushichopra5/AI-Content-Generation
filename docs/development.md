@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document captures day-to-day development conventions for contributors working on the backend.
+This document captures day-to-day development conventions for contributors working on the backend and the guest-first frontend.
 
 ## Local Setup
 
@@ -20,6 +20,22 @@ Start a worker in another terminal:
 ```bash
 source .venv/bin/activate
 celery -A config.celery:app worker --loglevel info
+```
+
+## Frontend Setup
+
+The guest-first frontend lives in `frontend/`.
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Useful environment variable:
+
+```bash
+NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
 ```
 
 ## Where To Put Code
@@ -87,9 +103,12 @@ If you change endpoints:
 
 - `/health/`
 - `/api/v1/auth/*`
+- `/api/v1/guest/bootstrap/`
 - `/api/v1/generate/`
 - `/api/v1/jobs/{id}/`
 - Django admin
+- Next.js `/workspace`
+- Next.js `/jobs/[jobId]`
 
 ## Documentation Discipline
 
@@ -97,4 +116,5 @@ When you materially change architecture or behavior, update:
 - [README.md](../README.md)
 - [docs/architecture.md](architecture.md)
 - [docs/api.md](api.md)
+- [docs/frontend-architecture.md](frontend-architecture.md)
 - tests

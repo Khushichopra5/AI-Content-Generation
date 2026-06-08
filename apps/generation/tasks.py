@@ -57,7 +57,7 @@ def run_copy_generation_task(self, job_id: str) -> None:
     )
 
     if job.include_image and job.output_payload.get("image_prompt"):
-        transaction.on_commit(lambda: run_image_generation_task.delay(str(job.id)))
+        run_image_generation_task.delay(str(job.id))
 
 
 @shared_task(

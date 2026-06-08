@@ -49,7 +49,9 @@ services:
       - key: OPENAI_TEXT_MODEL
         value: gpt-4.1-mini
       - key: OPENAI_IMAGE_MODEL
-        value: gpt-5
+        value: gpt-image-1
+      - key: OPENAI_IMAGE_REQUEST_TIMEOUT
+        value: "180"
 
   - type: worker
     name: contentgen-worker
@@ -86,4 +88,6 @@ services:
       - key: OPENAI_TEXT_MODEL
         value: gpt-4.1-mini
       - key: OPENAI_IMAGE_MODEL
-        value: gpt-5
+        value: gpt-image-1
+      - key: OPENAI_IMAGE_REQUEST_TIMEOUT
+        value: "180"

@@ -7,6 +7,8 @@ from rest_framework.request import Request
 from rest_framework.views import APIView
 
 from apps.common.throttling import AnonymousRateThrottle
+from apps.guests.authentication import GuestSessionAuthentication
+from apps.guests.services import GuestSessionService
 
 from .authentication import BearerTokenAuthentication
 from .models import APIToken, User
@@ -32,6 +34,7 @@ class RegistrationView(APIView):
         serializer = UserRegistrationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+        _migrate_guest_session_if_present(request=request, target_user=user)
         issued_token = APIToken.issue_for_user(user, name="signup")
         return response.Response(
             {
@@ -53,6 +56,7 @@ class LoginView(APIView):
         serializer = LoginSerializer(data=request.data, context={"request": request})
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
+        _migrate_guest_session_if_present(request=request, target_user=user)
         login(request, user)
         issued_token = APIToken.issue_for_user(user, name=serializer.validated_data["token_name"])
         payload = {
@@ -64,7 +68,7 @@ class LoginView(APIView):
 
 
 class LogoutView(APIView):
-    authentication_classes = [SessionAuthentication, BearerTokenAuthentication]
+    authentication_classes = [SessionAuthentication, BearerTokenAuthentication, GuestSessionAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request: Request):
@@ -76,7 +80,7 @@ class LogoutView(APIView):
 
 class MeView(generics.RetrieveUpdateAPIView):
     serializer_class = UserSerializer
-    authentication_classes = [SessionAuthentication, BearerTokenAuthentication]
+    authentication_classes = [SessionAuthentication, BearerTokenAuthentication, GuestSessionAuthentication]
     permission_classes = [permissions.IsAuthenticated, IsSelfOrAdmin]
 
     def get_object(self) -> User:
@@ -94,7 +98,7 @@ class MeView(generics.RetrieveUpdateAPIView):
 
 class APITokenViewSet(viewsets.ModelViewSet):
     serializer_class = APITokenSerializer
-    authentication_classes = [SessionAuthentication, BearerTokenAuthentication]
+    authentication_classes = [SessionAuthentication, BearerTokenAuthentication, GuestSessionAuthentication]
     permission_classes = [permissions.IsAuthenticated]
     http_method_names = ["get", "post", "delete", "head", "options"]
 
@@ -110,6 +114,11 @@ class APITokenViewSet(viewsets.ModelViewSet):
         return APITokenSerializer
 
     def create(self, request: Request, *args, **kwargs):
+        if request.user.is_guest:
+            return response.Response(
+                {"detail": "Guest sessions cannot mint permanent API tokens. Create an account first."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         issued_token = APIToken.issue_for_user(
@@ -136,3 +145,23 @@ class APITokenViewSet(viewsets.ModelViewSet):
         token = self.get_object()
         token.revoke()
         return response.Response(APITokenSerializer(token).data)
+
+
+def _resolve_guest_session_from_headers(request: Request):
+    guest_id = request.headers.get("X-Guest-Id")
+    session_id = request.headers.get("X-Session-Id")
+    device_id = request.headers.get("X-Device-Id")
+    if not guest_id or not session_id or not device_id:
+        return None
+    return GuestSessionService().resolve_session(
+        guest_id=guest_id,
+        session_id=session_id,
+        device_id=device_id,
+    )
+
+
+def _migrate_guest_session_if_present(*, request: Request, target_user: User) -> None:
+    guest_session = _resolve_guest_session_from_headers(request)
+    if guest_session is None:
+        return
+    GuestSessionService().migrate_guest_assets(guest_session=guest_session, target_user=target_user)

@@ -87,21 +87,25 @@ class OpenAIClient:
         model: str | None = None,
     ) -> ImageGenerationResult:
         try:
-            response = self.client.responses.create(
+            response = self.client.images.generate(
                 model=model or settings.OPENAI_IMAGE_MODEL,
-                input=prompt,
-                tools=[{"type": "image_generation"}],
+                prompt=prompt,
+                output_format="png",
+                quality="medium",
+                size="1024x1024",
+                timeout=settings.OPENAI_IMAGE_REQUEST_TIMEOUT,
             )
         except (APIConnectionError, APITimeoutError, APIStatusError) as exc:
             raise OpenAITransientError(str(exc)) from exc
 
-        for output in getattr(response, "output", []):
-            if getattr(output, "type", None) == "image_generation_call" and getattr(output, "result", None):
+        if getattr(response, "data", None):
+            image_entry = response.data[0]
+            if getattr(image_entry, "b64_json", None):
                 return ImageGenerationResult(
-                    image_bytes=base64.b64decode(output.result),
+                    image_bytes=base64.b64decode(image_entry.b64_json),
                     mime_type="image/png",
-                    revised_prompt=getattr(output, "revised_prompt", None),
-                    response_id=getattr(response, "id", None),
+                    revised_prompt=None,
+                    response_id=None,
                 )
 
         raise OpenAIResponseValidationError("Image generation output missing image payload.")

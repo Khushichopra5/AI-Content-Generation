@@ -1,9 +1,20 @@
 from django.conf import settings
 from django.core.cache import caches
 from django.db import connection
+from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+
+
+def home_view(request):
+    return render(
+        request,
+        "home.html",
+        {
+            "debug": settings.DEBUG,
+        },
+    )
 
 
 @api_view(["GET"])

@@ -6,6 +6,7 @@ from rest_framework.test import APIClient
 
 from apps.authentication.models import APIToken, User
 from apps.brands.models import BrandProfile
+from apps.guests.models import GuestSession
 from apps.templates.models import ContentTemplate
 
 
@@ -37,6 +38,30 @@ def auth_token(user: User) -> str:
 def authenticated_client(api_client: APIClient, auth_token: str) -> APIClient:
     api_client.credentials(HTTP_AUTHORIZATION=f"Bearer {auth_token}")
     return api_client
+
+
+@pytest.fixture
+def guest_bootstrap(api_client: APIClient) -> dict:
+    response = api_client.post("/api/v1/guest/bootstrap/", {}, format="json")
+    assert response.status_code == 201
+    return response.json()
+
+
+@pytest.fixture
+def guest_client(api_client: APIClient, guest_bootstrap: dict) -> APIClient:
+    session = guest_bootstrap["session"]
+    api_client.credentials(
+        HTTP_X_GUEST_ID=session["guest_id"],
+        HTTP_X_SESSION_ID=session["session_id"],
+        HTTP_X_DEVICE_ID=session["device_id"],
+    )
+    return api_client
+
+
+@pytest.fixture
+def guest_session(guest_bootstrap: dict) -> GuestSession:
+    session = guest_bootstrap["session"]
+    return GuestSession.objects.get(session_id=session["session_id"])
 
 
 @pytest.fixture

@@ -2,6 +2,7 @@ from rest_framework import filters, permissions, viewsets
 from rest_framework.authentication import SessionAuthentication
 
 from apps.authentication.authentication import BearerTokenAuthentication
+from apps.guests.authentication import GuestSessionAuthentication
 
 from .models import UsageEvent
 from .serializers import UsageEventSerializer
@@ -9,7 +10,7 @@ from .serializers import UsageEventSerializer
 
 class UsageEventViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = UsageEventSerializer
-    authentication_classes = [SessionAuthentication, BearerTokenAuthentication]
+    authentication_classes = [SessionAuthentication, BearerTokenAuthentication, GuestSessionAuthentication]
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ["event_type"]

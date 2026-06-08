@@ -209,11 +209,13 @@ Important variables:
 - `OPENAI_API_KEY`
 - `OPENAI_TEXT_MODEL`
 - `OPENAI_IMAGE_MODEL`
+- `OPENAI_IMAGE_REQUEST_TIMEOUT`
 
 Notes:
 - default local settings module is `config.settings.local`
-- the image generation path uses a text-capable Responses API model such as `gpt-5` with the hosted `image_generation` tool
-- `gpt-image-1` should not be used as the top-level `model` field for the Responses API image tool flow
+- the image generation path uses the dedicated OpenAI Images API
+- default image model is `gpt-image-1`
+- increase `OPENAI_IMAGE_REQUEST_TIMEOUT` if image generation is slow in your environment
 
 ## Local Development
 

@@ -14,6 +14,21 @@ ALLOWED_HOSTS = env.list(
     "DJANGO_ALLOWED_HOSTS",
     env.list("ALLOWED_HOSTS", ["localhost", "127.0.0.1"]),
 )
+CORS_ALLOW_ALL_ORIGINS = env.bool("CORS_ALLOW_ALL_ORIGINS", DEBUG)
+CORS_ALLOWED_ORIGINS = env.list(
+    "CORS_ALLOWED_ORIGINS",
+    ["http://localhost:3000", "http://127.0.0.1:3000"],
+)
+CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+CORS_ALLOW_HEADERS = [
+    "Content-Type",
+    "Authorization",
+    "X-Guest-Id",
+    "X-Session-Id",
+    "X-Device-Id",
+    "X-Request-ID",
+]
+CORS_PREFLIGHT_MAX_AGE_SECONDS = env.int("CORS_PREFLIGHT_MAX_AGE_SECONDS", 86400)
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -25,6 +40,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "apps.authentication",
     "apps.brands",
+    "apps.guests",
     "apps.templates",
     "apps.generation",
     "apps.usage",
@@ -35,6 +51,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "apps.common.middleware.CORSMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -138,12 +155,19 @@ CELERY_TASK_DEFAULT_QUEUE = "default"
 
 OPENAI_API_KEY = env.str("OPENAI_API_KEY", "")
 OPENAI_TEXT_MODEL = env.str("OPENAI_TEXT_MODEL", "gpt-4.1-mini")
-OPENAI_IMAGE_MODEL = env.str("OPENAI_IMAGE_MODEL", "gpt-5")
+OPENAI_IMAGE_MODEL = env.str("OPENAI_IMAGE_MODEL", "gpt-image-1")
 OPENAI_REQUEST_TIMEOUT = env.int("OPENAI_REQUEST_TIMEOUT", 90)
+OPENAI_IMAGE_REQUEST_TIMEOUT = env.int("OPENAI_IMAGE_REQUEST_TIMEOUT", max(OPENAI_REQUEST_TIMEOUT, 180))
 
 CONTENT_CACHE_TTL_SECONDS = env.int("CONTENT_CACHE_TTL_SECONDS", 3600)
 JOB_STATUS_CACHE_TTL_SECONDS = env.int("JOB_STATUS_CACHE_TTL_SECONDS", 300)
 DEDUP_LOCK_TTL_SECONDS = env.int("DEDUP_LOCK_TTL_SECONDS", 180)
+GUEST_SESSION_TTL_SECONDS = env.int("GUEST_SESSION_TTL_SECONDS", 60 * 60 * 24 * 14)
+GUEST_RETENTION_DAYS = env.int("GUEST_RETENTION_DAYS", 14)
+GUEST_DAILY_GENERATION_SOFT_LIMIT = env.int("GUEST_DAILY_GENERATION_SOFT_LIMIT", 25)
+GUEST_DAILY_BRAND_SOFT_LIMIT = env.int("GUEST_DAILY_BRAND_SOFT_LIMIT", 10)
+GUEST_DAILY_TEMPLATE_SOFT_LIMIT = env.int("GUEST_DAILY_TEMPLATE_SOFT_LIMIT", 10)
+GUEST_REDIS_KEY_PREFIX = env.str("GUEST_REDIS_KEY_PREFIX", "guest-session")
 
 OBJECT_STORAGE_BACKEND = env.str("OBJECT_STORAGE_BACKEND", "local")
 OBJECT_STORAGE_MEDIA_PREFIX = env.str("OBJECT_STORAGE_MEDIA_PREFIX", "generated")

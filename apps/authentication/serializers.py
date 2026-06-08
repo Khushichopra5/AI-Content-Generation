@@ -43,6 +43,8 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Invalid email/password combination.")
         if not user.is_active:
             raise serializers.ValidationError("This account is inactive.")
+        if user.is_guest:
+            raise serializers.ValidationError("Guest identities cannot log in directly.")
         attrs["user"] = user
         return attrs
 

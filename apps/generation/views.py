@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.authentication.authentication import BearerTokenAuthentication
+from apps.guests.authentication import GuestSessionAuthentication
 from apps.brands.models import BrandProfile
 from apps.generation.models import GenerationJob
 from apps.generation.serializers import (
@@ -19,7 +20,7 @@ from apps.templates.models import ContentTemplate
 
 class GenerationJobViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     serializer_class = GenerationJobSerializer
-    authentication_classes = [SessionAuthentication, BearerTokenAuthentication]
+    authentication_classes = [SessionAuthentication, BearerTokenAuthentication, GuestSessionAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
@@ -31,7 +32,7 @@ class GenerationJobViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, vie
 
 
 class GenerationCreateView(APIView):
-    authentication_classes = [SessionAuthentication, BearerTokenAuthentication]
+    authentication_classes = [SessionAuthentication, BearerTokenAuthentication, GuestSessionAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
@@ -39,7 +40,7 @@ class GenerationCreateView(APIView):
 
 
 class ImageGenerationCreateView(APIView):
-    authentication_classes = [SessionAuthentication, BearerTokenAuthentication]
+    authentication_classes = [SessionAuthentication, BearerTokenAuthentication, GuestSessionAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
@@ -47,7 +48,7 @@ class ImageGenerationCreateView(APIView):
 
 
 class RegenerateView(generics.GenericAPIView):
-    authentication_classes = [SessionAuthentication, BearerTokenAuthentication]
+    authentication_classes = [SessionAuthentication, BearerTokenAuthentication, GuestSessionAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, job_id):

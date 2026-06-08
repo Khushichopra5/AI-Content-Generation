@@ -18,6 +18,8 @@ This folder contains implementation and operations documentation for the project
   - deployment shape, environment requirements, rollout checklist
 - [development.md](development.md)
   - local development conventions and implementation guidance
+- [frontend-architecture.md](frontend-architecture.md)
+  - guest workspace structure, state model, route layout, and PROMPT2 scope handling
 
 ## Suggested Reading Order
 
@@ -27,7 +29,8 @@ For new engineers:
 2. [data-model.md](data-model.md)
 3. [api.md](api.md)
 4. [development.md](development.md)
-5. [testing.md](testing.md)
+5. [frontend-architecture.md](frontend-architecture.md)
+6. [testing.md](testing.md)
 
 For operators:
 

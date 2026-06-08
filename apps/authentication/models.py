@@ -60,6 +60,7 @@ class User(AbstractUser):
     username = models.CharField(max_length=150, unique=False, blank=True)
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=255, blank=True)
+    is_guest = models.BooleanField(default=False)
     role = models.CharField(max_length=32, choices=UserRole.choices, default=UserRole.MEMBER)
     created_at = models.DateTimeField(default=timezone.now, editable=False)
     updated_at = models.DateTimeField(auto_now=True)
