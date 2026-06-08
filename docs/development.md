@@ -29,6 +29,30 @@ The guest-first frontend lives in `frontend/`.
 ```bash
 cd frontend
 npm install
+NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8010 npm run dev
+```
+
+If you are also starting Django locally for isolated frontend work, use an explicit backend port so the frontend does not accidentally talk to some unrelated service already using `localhost:8000`.
+
+```bash
+DJANGO_SETTINGS_MODULE=config.settings.test .venv/bin/python manage.py migrate
+DJANGO_SETTINGS_MODULE=config.settings.test .venv/bin/python manage.py runserver 127.0.0.1:8010
+cd frontend
+npm install
+NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8010 npm run dev
+```
+
+The frontend also includes a Playwright regression suite for the guest workspace and job-detail flow:
+
+```bash
+cd frontend
+PLAYWRIGHT_API_BASE_URL=http://127.0.0.1:8010 npm run test:e2e
+```
+
+If you prefer the default backend port, you can still point the frontend at it explicitly:
+
+```bash
+cd frontend
 npm run dev
 ```
 
